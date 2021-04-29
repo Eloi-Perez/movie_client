@@ -26495,19 +26495,19 @@ try {
       this.state = {
         movies: [{
           _id: 1,
-          Title: 'Inception',
+          Title: 'Primer',
           Description: 'desc1...',
-          ImagePath: '...'
+          ImagePath: 'https://movie-api2.herokuapp.com/img/primer'
         }, {
           _id: 2,
-          Title: 'The Shawshank Redemption',
+          Title: 'Looper',
           Description: 'desc2...',
-          ImagePath: '...'
+          ImagePath: 'https://movie-api2.herokuapp.com/img/looper'
         }, {
           _id: 3,
-          Title: 'Gladiator',
+          Title: 'Arrival',
           Description: 'desc3...',
-          ImagePath: '...'
+          ImagePath: 'https://movie-api2.herokuapp.com/img/arrival'
         }],
         selectedMovie: null
       };
