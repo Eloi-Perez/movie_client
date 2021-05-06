@@ -4,7 +4,7 @@ import axios from 'axios';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
@@ -19,7 +19,7 @@ export class MainView extends React.Component {
         super();
         this.state = {
             movies: [],
-            selectedMovie: null,
+            // selectedMovie: null,
             user: null
         }
     }
@@ -27,12 +27,12 @@ export class MainView extends React.Component {
     componentDidMount() {
         let accessToken = localStorage.getItem('token');
         if (accessToken !== null) {
-          this.setState({
-            user: localStorage.getItem('user')
-          });
-          this.getMovies(accessToken);
+            this.setState({
+                user: localStorage.getItem('user')
+            });
+            this.getMovies(accessToken);
         }
-      }
+    }
 
     setSelectedMovie(newSelectedMovie) {
         this.setState({
@@ -55,51 +55,47 @@ export class MainView extends React.Component {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         this.setState({
-          user: null
+            user: null
         });
-      }
+    }
 
     getMovies(token) {
         axios.get('https://movie-api2.herokuapp.com/movies', {
-          headers: { Authorization: `Bearer ${token}`}
+            headers: { Authorization: `Bearer ${token}` }
         })
-        .then(response => {
-          // Assign the result to the state
-          this.setState({
-            movies: response.data
-          });
-          console.log(this.state.movies);//del
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-      }
+            .then(response => {
+                // Assign the result to the state
+                this.setState({
+                    movies: response.data
+                });
+                console.log(this.state.movies);//del
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     render() {
-        const { movies, selectedMovie } = this.state;
-        // console.log(this.state.authData);
-        /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView*/
-        //if (!this.state.authData) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
-        // if (this.state.authData === "toRegister") return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
-
-
-        if (movies.length === 0) return <div className="main-view" />;
+        const { movies, user } = this.state;
 
         return (
-            <Row className="main-view justify-content-md-center">
-                {selectedMovie
-                    ? (
-                        <Col md={8}>
-                            <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
+            <Router>
+                <Row className="main-view justify-content-md-center">
+                    <Route exact path="/" render={() => {
+                        return movies.map(m => (
+                            <Col md={3} key={m._id}>
+                                <MovieCard movie={m} />
+                            </Col>
+                        ))
+                    }} />
+                    <Route path="/movies/:movieId" render={({ match }) => {
+                        return <Col md={8}>
+                            <MovieView movie={movies.find(m => m._id === match.params.movieId)} />
                         </Col>
-                    )
-                    : (movies.map(movie => (
-                        <Col md={3}>
-                            <MovieCard key={movie._id} movie={movie} onMovieClick={(newSelectedMovie) => { this.setSelectedMovie(newSelectedMovie) }} />
-                        </Col>
-                    )))
-                }
-            </Row>
+                    }} />
+
+                </Row>
+            </Router>
         );
 
     }
