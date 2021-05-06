@@ -1,7 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+
+
 
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
@@ -22,16 +25,14 @@ export class MainView extends React.Component {
     }
 
     componentDidMount() {
-        axios.get('https://movie-api2.herokuapp.com/movies/featured')
-            .then(response => {
-                this.setState({
-                    movies: response.data
-                });
-            })
-            .catch(error => {
-                console.log(error);
-            });
-    }
+        let accessToken = localStorage.getItem('token');
+        if (accessToken !== null) {
+          this.setState({
+            user: localStorage.getItem('user')
+          });
+          this.getMovies(accessToken);
+        }
+      }
 
     setSelectedMovie(newSelectedMovie) {
         this.setState({
@@ -40,18 +41,46 @@ export class MainView extends React.Component {
     }
 
     /* After login, updates 'user' in state */
-    onLoggedIn(user) {
+    onLoggedIn(authData) {
         this.setState({
-            user
+            user: authData.Username
         });
+
+        localStorage.setItem('token', authData.token);
+        localStorage.setItem('user', authData.Username);
+        this.getMovies(authData.token);
     }
+
+    onLoggedOut() {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        this.setState({
+          user: null
+        });
+      }
+
+    getMovies(token) {
+        axios.get('https://movie-api2.herokuapp.com/movies', {
+          headers: { Authorization: `Bearer ${token}`}
+        })
+        .then(response => {
+          // Assign the result to the state
+          this.setState({
+            movies: response.data
+          });
+          console.log(this.state.movies);//del
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+      }
 
     render() {
         const { movies, selectedMovie } = this.state;
-
+        // console.log(this.state.authData);
         /* If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView*/
-        if (!this.state.user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
-        if (this.state.user === "toRegister") return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
+        //if (!this.state.authData) return <LoginView onLoggedIn={user => this.onLoggedIn(user)} />;
+        // if (this.state.authData === "toRegister") return <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} />;
 
 
         if (movies.length === 0) return <div className="main-view" />;
