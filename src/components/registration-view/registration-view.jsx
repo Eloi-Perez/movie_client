@@ -9,16 +9,28 @@ export function RegistrationView(props) {
     const [email, setEmail] = useState('');
     const [birthdate, setBirthdate] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleRegister = (e) => {
         e.preventDefault();
-        console.log(username, password, email, birthdate);
-        /* Send a request to the server for authentication  TO DO*/
-        props.onLoggedIn(username);
+        axios.post('YOUR_API_URL/users', {
+            Username: username,
+            Password: password,
+            Email: email,
+            Birthdate: birthdate
+        })
+            .then(response => {
+                const data = response.data;
+                console.log(data);
+                // props.onLoggedIn(data);
+                window.open('/', '_self'); // '_self' open in the current tab
+            })
+            .catch(e => {
+                console.log('error registering the user')
+            });
     };
 
-    const backLogin = () => {
-        props.onLoggedIn(null);
-    };
+    // const backLogin = () => {
+    //     props.onLoggedIn(null);
+    // };
 
     return (
         <div>
@@ -43,10 +55,11 @@ export function RegistrationView(props) {
                     <Form.Control type="date" onChange={e => setBirthdate(e.target.value)} />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
+                <Button variant="primary" type="submit" onClick={handleRegister}>Register</Button>
             </Form>
             <br />
             <Button variant="secondary" onClick={backLogin}>Log In with existing User</Button>
+            {/* <button onClick={() => { onBackClick() }}>Back</button> */}
         </div>
     );
 }

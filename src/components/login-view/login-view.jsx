@@ -3,6 +3,7 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { Link } from "react-router-dom";
 
 export function LoginView(props) {
     const [username, setUsername] = useState('');
@@ -20,14 +21,14 @@ export function LoginView(props) {
                 props.onLoggedIn(data);
             })
             .catch(e => {
-                console.log(e)
-                //console.log('no such user')
+                // console.log(e)
+                console.log('no such user')
             });
     };
 
-    const sendRegister = () => {
-        props.onLoggedIn("toRegister");
-    };
+    // const sendRegister = () => {
+    //     props.onLoggedIn('R');
+    // };
 
     return (
         <div>
@@ -45,7 +46,9 @@ export function LoginView(props) {
                 <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
             </Form>
             <br />
-            <Button variant="secondary" onClick={sendRegister}>Register</Button>
+            {/* <Link to={'/register'}>
+                <Button variant="link">Register</Button>
+            </Link> */}
         </div>
     );
 }
