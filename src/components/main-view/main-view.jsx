@@ -10,6 +10,8 @@ import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
 import { GenreView } from '../genre-view/genre-view';
 
+import { LinkContainer } from 'react-router-bootstrap'
+import Nav from 'react-bootstrap/Nav'
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -86,13 +88,28 @@ export class MainView extends React.Component {
 
         return (
             <Router>
-                <Row className="main-view justify-content-md-center">
-                    <Route exact path="/" render={() => {
-                        if (!user) return <Col>
-                            <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
-                        </Col>
-                        if (movies.length === 0) return <div className="main-view" />;
-                        //both 'if' in each Route 
+                <div className="main-view">
+                    <Nav variant="tabs" defaultActiveKey="/">
+                        <Nav.Item as="li">
+                            {/* <Link to={'/'}>Home</Link> */}
+                            <LinkContainer to="/">
+                                <Nav.Link>Home</Nav.Link>
+                            </LinkContainer>
+                        </Nav.Item>
+                        <Nav.Item as="li">
+                            {/* <Link to={`/users/${user}`}>Profile</Link> */}
+                            <LinkContainer to={`/users/${user}`}>
+                                <Nav.Link>Profile</Nav.Link>
+                            </LinkContainer>
+                        </Nav.Item>
+                    </Nav>
+                    <Row className="justify-content-md-center">
+                        <Route exact path="/" render={() => {
+                            if (!user) return <Col>
+                                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
+                            </Col>
+                            if (movies.length === 0) return <div className="main-view" />;
+                            //both 'if' in each Route 
 
                         return movies.map(m => (
                             <Col md={3} key={m._id}>
