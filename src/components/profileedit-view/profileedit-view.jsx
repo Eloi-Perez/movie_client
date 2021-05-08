@@ -18,6 +18,13 @@ export class ProfileEditView extends React.Component {
         const deleteUser = (e) => {
             e.preventDefault();
             console.log(e);
+            let delAlert = confirm("Are you sure?");
+            if (delAlert) {
+                console.log('deleting');
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                return location.assign('/');
+            }
             // let token = localStorage.getItem('token');
             // let payload = {
             //     Username: user1,
