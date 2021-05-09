@@ -26,7 +26,7 @@ export class MainView extends React.Component {
         this.state = {
             movies: [],
             user: null,
-            myMovies: null
+            myMovies: null,
         }
     }
 
@@ -150,7 +150,7 @@ export class MainView extends React.Component {
                             if (movies.length === 0) return <div className="main-view" />;
 
                             return <Col md={8}>
-                                <ProfileView userParam={match.params.username} />
+                                <ProfileView userParam={match.params.username} movies={movies} myMovies={myMovies} />
                             </Col>
                         }} />
                         <Route path="/users/:username/edit" render={({ match, history }) => {
