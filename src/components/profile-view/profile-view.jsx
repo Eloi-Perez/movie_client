@@ -14,11 +14,11 @@ export class ProfileView extends React.Component {
     };
 
     render() {
-        const { user1 } = this.props;
+        const { userParam } = this.props;
 
         const getUser = new Promise((resolve, reject) => {
             let token = localStorage.getItem('token');
-            axios.get(`https://movie-api2.herokuapp.com/users/${user1}`, {
+            axios.get(`https://movie-api2.herokuapp.com/users/${userParam}`, {
                 headers: { Authorization: `Bearer ${token}` }
             })
                 .then(response => {
@@ -31,19 +31,19 @@ export class ProfileView extends React.Component {
                 });
         });
         getUser.then(e => this.dataUsers.push(e))
-            .then(this.dataUsers.map(e => console.log(e)));
-        // if (!dataUsers.find(o => o.Username === "user1")) {console.log('not here')} else console.log('already here')
-        // dataUsers.push(user1)
-        // let myName = dataUsers.find(o => o.Username === "user1");
+            // .then(this.dataUsers.map(e => console.log(e)));
+        // if (!dataUsers.find(o => o.Username === "userParam")) {console.log('not here')} else console.log('already here')
+        // dataUsers.push(userParam)
+        // let myName = dataUsers.find(o => o.Username === "userParam");
         // console.log(myName)
         // console.log(dataUsers[0])
 
         return (
-            <div>{console.log(this.dataUsers)}
+            <div>
                 <h2>PROFILE INFO</h2>
                 <p>Username: {`data from axios`}</p>
                 <p>myMovies: {`data from axios and call movie-card-with-fav-button`}</p>
-                <Link to={`/users/${user1}/edit`}>Edit Profile pesonal information</Link>
+                <Link to={`/users/${userParam}/edit`}>Edit Profile pesonal information</Link>
             </div>
         )
 

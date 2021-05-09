@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
+
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export function LoginView(props) {
     const [username, setUsername] = useState('');
@@ -26,10 +27,6 @@ export function LoginView(props) {
             });
     };
 
-    // const sendRegister = () => {
-    //     props.onLoggedIn('R');
-    // };
-
     return (
         <div>
             <Form>
@@ -43,12 +40,12 @@ export function LoginView(props) {
                     <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
                 </Form.Group>
 
-                <Button variant="primary" type="submit" onClick={handleSubmit}>Submit</Button>
+                <Button variant="primary" type="submit" onClick={handleSubmit}>Login</Button>
             </Form>
             <br />
-            {/* <Link to={'/register'}>
-                <Button variant="link">Register</Button>
-            </Link> */}
+            <Link to={'/register'}>
+                <Button variant="secondary">Register new Account</Button>
+            </Link>
         </div>
     );
 }

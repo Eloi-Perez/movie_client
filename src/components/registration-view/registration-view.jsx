@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import PropTypes from 'prop-types';
 
 export function RegistrationView(props) {
     const [username, setUsername] = useState('');
@@ -11,7 +13,7 @@ export function RegistrationView(props) {
 
     const handleRegister = (e) => {
         e.preventDefault();
-        axios.post('YOUR_API_URL/users', {
+        axios.post('https://movie-api2.herokuapp.com/users', {
             Username: username,
             Password: password,
             Email: email,
@@ -20,17 +22,16 @@ export function RegistrationView(props) {
             .then(response => {
                 const data = response.data;
                 console.log(data);
-                // props.onLoggedIn(data);
-                window.open('/', '_self'); // '_self' open in the current tab
+                props.onLoggedIn(data);
+                // location.assign('/');
+                // window.open('/', '_self'); // '_self' open in the current tab
             })
-            .catch(e => {
-                console.log('error registering the user')
+            .catch(err => {
+                console.log(err.response.data.errors[0]);
+                console.error(err)
+                // console.log('error registering the user')
             });
     };
-
-    // const backLogin = () => {
-    //     props.onLoggedIn(null);
-    // };
 
     return (
         <div>
@@ -58,7 +59,7 @@ export function RegistrationView(props) {
                 <Button variant="primary" type="submit" onClick={handleRegister}>Register</Button>
             </Form>
             <br />
-            <Button variant="secondary" onClick={backLogin}>Log In with existing User</Button>
+            <Button variant="secondary" onClick={props.onBackClick}>Log In with existing User</Button>
             {/* <button onClick={() => { onBackClick() }}>Back</button> */}
         </div>
     );

@@ -1,41 +1,111 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Button from 'react-bootstrap/Button';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from "react-router-dom";
+import PropTypes from 'prop-types';
 
-export class MovieView extends React.Component {
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
-    render() {
-        const { movie, onBackClick } = this.props;
+export function MovieView(props) {
+    const [checkedFav, setCheckedFav] = useState(false)
+    const [checkedPlan, setCheckedPlan] = useState(false)
+    const [score, setScore] = useState(null)
+    const { movie, myMovie, onBackClick } = props;
 
-        return (
-            <div className="movie-view">
-                <div className="movie-poster">
-                    <img src={`https://movie-api2.herokuapp.com${movie.ImagePath}`} />
-                </div>
-                <div className="movie-title">
-                    <span className="label">Title: </span>
-                    <span className="value">{movie.Title}</span>
-                </div>
-                <div className="movie-description">
-                    <span className="label">Description: </span>
-                    <span className="value">{movie.Description}</span>
-                </div>
-                <Link to={`/directors/${movie.Director.Name}`}>
-                    <Button variant="link">Director</Button>
-                </Link>
+    useEffect(() => {
+        if (!!myMovie) {
+            setCheckedFav(myMovie.Favorite);
+            setCheckedPlan(myMovie.PlanToWatch);
+            setScore(myMovie.Score);
+            console.log(myMovie);
+        }
+    }, []); //loading only once
 
-                <Link to={`/genres/${movie.Genre.Name}`}>
-                    <Button variant="link">Genre</Button>
-                </Link>
-
-                {/* <Link to={'/'}>
-                    <Button variant="link">Home</Button>
-                </Link> */}
-                <button onClick={() => { onBackClick() }}>Back</button>
-            </div>
-        );
+    const switchFavorite = (e) => {
+        checkedFav ? setCheckedFav(false) : setCheckedFav(true);
     }
+    const switchPlan = (e) => {
+        checkedPlan ? setCheckedPlan(false) : setCheckedPlan(true);
+    }
+    const switchScore = (val) => {
+        let numVal = parseInt(val);
+        setScore(numVal);
+    }
+
+    const saveProperties = (e) => {
+        e.preventDefault();
+        console.log('saving...');
+        let storedUser = localStorage.getItem('user');
+        let token = localStorage.getItem('token');
+        axios.put(`https://movie-api2.herokuapp.com/users/${storedUser}/myMovies`, {
+            Movie: movie.Title,
+            Favorite: checkedFav,
+            PlanToWatch: checkedPlan,
+            Score: score
+        }, {
+            headers: { Authorization: `Bearer ${token}` }
+
+        })
+            .then(response => {
+                const data = response.data;
+                console.log(data);
+                console.log('saved');
+                //update myMovie(need to be apss as a prop) <--------------------HERE--------------------
+            })
+            .catch(err => {
+                console.log(err.response.data);
+                // console.log(err.response.data.errors[0]);
+                console.error(err)
+            });
+    }
+
+    return (
+        <div className="movie-view">
+            <div className="movie-poster">
+                <img src={`https://movie-api2.herokuapp.com${movie.ImagePath}`} />
+            </div>
+            <div className="movie-title">
+                <span className="label">Title: </span>
+                <span className="value">{movie.Title}</span>
+            </div>
+            <div className="movie-description">
+                <span className="label">Description: </span>
+                <span className="value">{movie.Description}</span>
+            </div>
+            <br />
+            <Form>
+                <Form.Group controlId="formFav"><Form.Switch
+                    id={`switchFav-${movie._id}`}
+                    label="Favorite"
+                    onChange={e => switchFavorite(e.target)}
+                    checked={checkedFav}
+                /></Form.Group>
+                <Form.Group controlId="formPlan"><Form.Switch
+                    id={`switchPlan-${movie._id}`}
+                    label="Plan to watch"
+                    onChange={e => switchPlan(e.target)}
+                    checked={checkedPlan}
+                /></Form.Group>
+                <Form.Group controlId="formScore">
+                    <Form.Label>Score</Form.Label>
+                    <Form.Control as="select" value={score} onChange={e => switchScore(e.target.value)}>
+                        <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                    </Form.Control>
+                </Form.Group>
+                <Button variant="primary" type="submit" onClick={saveProperties}>Save changes</Button>
+            </Form>
+
+            <br /><br />
+            <Link to={`/directors/${movie.Director.Name}`}>
+                <Button variant="link">Director</Button>
+            </Link>
+            <Link to={`/genres/${movie.Genre.Name}`}>
+                <Button variant="link">Genre</Button>
+            </Link>
+
+            <button onClick={() => { onBackClick() }}>Back</button>
+        </div>
+    );
 }
 
 MovieView.propTypes = {
