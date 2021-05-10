@@ -69,11 +69,9 @@ export class MainView extends React.Component {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => {
-                // Assign the result to the state
                 this.setState({
                     movies: response.data
                 });
-                // console.log(this.state.movies);//del
             })
             .catch(err => {
                 console.log(err);
@@ -88,7 +86,6 @@ export class MainView extends React.Component {
                 this.setState({
                     myMovies: response.data.myMovies
                 });
-                // console.log(this.state.myMovies);
             })
             .catch(err => {
                 console.log(err);
@@ -139,13 +136,11 @@ export class MainView extends React.Component {
 
                     <Nav variant="tabs" defaultActiveKey="/">
                         <Nav.Item as="li">
-                            {/* <Link to={'/'}>Home</Link> */}
                             <LinkContainer to="/">
                                 <Nav.Link>Home</Nav.Link>
                             </LinkContainer>
                         </Nav.Item>
                         <Nav.Item as="li">
-                            {/* <Link to={`/users/${user}`}>Profile</Link> */}
                             <LinkContainer to={`/users/${user}`}>
                                 <Nav.Link>Profile</Nav.Link>
                             </LinkContainer>
@@ -204,7 +199,7 @@ export class MainView extends React.Component {
                             if (!user) return <Col> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
                             if (movies.length === 0) return <div className="main-view" />;
                             return <Col md={8}>
-                                <MovieView
+                                <MovieView //find throwing error if refresh inside MovieView
                                     movie={movies.find(m => m._id === match.params.movieId)}
                                     myMovie={myMovies.find(e => e.Movie._id === match.params.movieId)}
                                     // myMovies={myMovies} to be updated in MovieView
