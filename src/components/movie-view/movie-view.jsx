@@ -9,7 +9,7 @@ import Form from 'react-bootstrap/Form';
 export function MovieView(props) {
     const [checkedFav, setCheckedFav] = useState(false)
     const [checkedPlan, setCheckedPlan] = useState(false)
-    const [score, setScore] = useState(null)
+    const [score, setScore] = useState("")
     const { movie, myMovie, onBackClick } = props;
 
     useEffect(() => {
@@ -33,7 +33,7 @@ export function MovieView(props) {
     }
 
     const scoreFunc = () => {
-        if (score) {return score};
+        if (score) { return score }
     }
 
     const saveProperties = (e) => {
@@ -55,6 +55,8 @@ export function MovieView(props) {
                 console.log(data);
                 console.log('saved');
                 //update myMovie(need to be pass as a prop) <--------------------HERE--------------------
+                //data not being updated automatically, when you add a film, go out and back info not saved in react, only in DB, so you need to relog
+                //need to update myMovie with response.data
             })
             .catch(err => {
                 console.log(err.response.data);
@@ -93,7 +95,9 @@ export function MovieView(props) {
                 <Form.Group controlId="formScore">
                     <Form.Label>Score</Form.Label>
                     <Form.Control as="select" value={scoreFunc()} onChange={e => switchScore(e.target.value)}>
+                        <option value="" >Choose Score</option>
                         <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+
                     </Form.Control>
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={saveProperties}>Save changes</Button>
