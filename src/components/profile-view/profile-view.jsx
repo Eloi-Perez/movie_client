@@ -12,10 +12,8 @@ export function ProfileView(props) {
     // const [myFavMovies, setMyFavMovies] = useState(null)
 
 
-    const { userParam, movies, myMovies } = props;
-    console.log(myMovies)
-    const myFavMovies = () =>{
-    }
+    const { userParam, getUserMovies, userMovies } = props;
+
     // const getUser = new Promise((resolve, reject) => { //async
     // const getUser = async (callback) => {
     //     let token = localStorage.getItem('token');
@@ -38,10 +36,10 @@ export function ProfileView(props) {
     //         });
 
     // };
-    // useEffect(() => {
-    //     getUser();
-    // }, []);
-
+    useEffect(() => {
+        getUserMovies(userParam);
+    }, [userParam]);
+    console.log(userMovies);
     // const getUser = new Promise((resolve, reject) => {
     //     let token = localStorage.getItem('token');
     //     axios.get(`https://movie-api2.herokuapp.com/users/${userParam}`, {
@@ -69,17 +67,16 @@ export function ProfileView(props) {
     return (
         <div>
             <h2>PROFILE INFO</h2>
-            <p>Username: {`data from axios`}</p>
-            <p>myMovies: {`data from axios and call movie-card-with-fav-button`}</p>
+            <p>Username: {userParam}</p>
             <br /><br />
             <h2>Favorite Movies:</h2>
             <Row>{
-                myMovies.map(m => {
+                userMovies &&
+                userMovies.map(m => {
                     if (m.Favorite) {
                     return ( <Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col> )
                     }
                 })
-                
             }</Row>
             <br /><br />
             <Link to={`/users/${userParam}/edit`}>Edit Profile pesonal information</Link>

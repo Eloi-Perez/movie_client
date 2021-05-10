@@ -34,7 +34,7 @@ export function ProfileEditView(props) {
                 .then(response => {
                     console.log(response.data);
                     console.log("deleted");
-                    onLoggedOut(); // props.onLoggedOut() check if works
+                    onLoggedOut();
                 })
                 .catch((err) => {
                     console.log(err);

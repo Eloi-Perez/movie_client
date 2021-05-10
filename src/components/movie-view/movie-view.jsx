@@ -54,7 +54,7 @@ export function MovieView(props) {
                 const data = response.data;
                 console.log(data);
                 console.log('saved');
-                //update myMovie(need to be apss as a prop) <--------------------HERE--------------------
+                //update myMovie(need to be pass as a prop) <--------------------HERE--------------------
             })
             .catch(err => {
                 console.log(err.response.data);

@@ -27,6 +27,7 @@ export class MainView extends React.Component {
             movies: [],
             user: null,
             myMovies: null,
+            userMovies: null
         }
     }
 
@@ -74,8 +75,8 @@ export class MainView extends React.Component {
                 });
                 // console.log(this.state.movies);//del
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch(err => {
+                console.log(err);
             });
     }
 
@@ -89,14 +90,49 @@ export class MainView extends React.Component {
                 });
                 // console.log(this.state.myMovies);
             })
-            .catch(function (error) {
-                console.log(error);
+            .catch(err => {
+                console.log(err);
             });
     }
 
+    getUserMovies(user) {
+        let token = localStorage.getItem('token');
+        axios.get(`https://movie-api2.herokuapp.com/users/${user}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+            .then(response => {
+                if (response.data.myMovies) {
+                    this.setState({
+                        userMovies: response.data.myMovies
+                    });
+                } else {
+                    console.log('myMovies not in user')
+                }
+                console.log('getUserMovies executed');
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+    // async getUserMovies(user) {
+    //     let token = localStorage.getItem('token');
+    //     try {
+    //         const response = await axios.get(`https://movie-api2.herokuapp.com/users/${user}`, {
+    //             headers: { Authorization: `Bearer ${token}` }
+    //         });
+    //         this.setState({
+    //             userMovies: response.data.myMovies
+    //         });
+    //         console.log('getUserMovies executed');
+    //         return response.data.myMovies;
+    //     } catch (err) {
+    //         console.log(err);
+    //     }
+    // }
+
     render() {
-        const { movies, user, myMovies } = this.state;
-        
+        const { movies, user, myMovies, userMovies } = this.state;
+
         return (
             <Router>
                 <div className="main-view">
@@ -145,12 +181,13 @@ export class MainView extends React.Component {
                                 <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onBackClick={() => history.goBack()} />
                             </Col>
                         }} />
-                        <Route path="/users/:username" render={({ match, history }) => {
+                        <Route path="/users/:username" render={({ match, history }) => {////////////////////////////////////////////////////////////
                             if (!user) return <Col> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
                             if (movies.length === 0) return <div className="main-view" />;
 
                             return <Col md={8}>
-                                <ProfileView userParam={match.params.username} movies={movies} myMovies={myMovies} />
+                                <ProfileView userParam={match.params.username} getUserMovies={a => this.getUserMovies(a)} userMovies={userMovies} />
+                                {/* userMovies={this.getUserMovies(match.params.username).then()} //////////////////*/}
                             </Col>
                         }} />
                         <Route path="/users/:username/edit" render={({ match, history }) => {
@@ -168,10 +205,10 @@ export class MainView extends React.Component {
                             if (movies.length === 0) return <div className="main-view" />;
                             return <Col md={8}>
                                 <MovieView
-                                movie={movies.find(m => m._id === match.params.movieId)}
-                                myMovie={myMovies.find(e => e.Movie._id === match.params.movieId)}
-                                // myMovies={myMovies} to be updated in MovieView
-                                onBackClick={() => history.goBack()} />
+                                    movie={movies.find(m => m._id === match.params.movieId)}
+                                    myMovie={myMovies.find(e => e.Movie._id === match.params.movieId)}
+                                    // myMovies={myMovies} to be updated in MovieView
+                                    onBackClick={() => history.goBack()} />
                             </Col>
                         }} />
                         <Route path="/genres/:name" render={({ match, history }) => {
