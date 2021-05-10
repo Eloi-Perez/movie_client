@@ -14,7 +14,7 @@ export function ProfileEditView(props) {
     const [newEmail, setNewEmail] = useState('');
     const [birthdate, setBirthdate] = useState('');
     const [delPassword, setDelPassword] = useState('');
-    const userParam = props.userParam;
+    const { userParam, onLoggedOut, onBackClick } = props;
 
 
     const deleteUser = (e) => {
@@ -34,7 +34,7 @@ export function ProfileEditView(props) {
                 .then(response => {
                     console.log(response.data);
                     console.log("deleted");
-                    props.onLoggedOut()
+                    onLoggedOut(); // props.onLoggedOut() check if works
                 })
                 .catch((err) => {
                     console.log(err);
@@ -77,6 +77,7 @@ export function ProfileEditView(props) {
         <div>
             <br /><br />
             <h3>FORM EDIT INFO</h3>
+            <button onClick={() => { onBackClick() }}>Back</button>
             <Form>
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password*:</Form.Label>
