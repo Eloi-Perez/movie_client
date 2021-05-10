@@ -75,9 +75,10 @@ export function ProfileEditView(props) {
     };
     return (
         <div>
+            <br />
+            <button onClick={() => { onBackClick() }}>Back</button>
             <br /><br />
             <h3>FORM EDIT INFO</h3>
-            <button onClick={() => { onBackClick() }}>Back</button>
             <Form>
                 <Form.Group controlId="formPassword">
                     <Form.Label>Password*:</Form.Label>
