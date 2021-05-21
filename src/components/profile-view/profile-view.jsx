@@ -24,7 +24,7 @@ export function ProfileView(props) {
                 userMovies &&
                 userMovies.map(m => {
                     if (m.Favorite) {
-                    return ( <Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col> )
+                    return ( <Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col> ) //update to redux
                     }
                 })
             }</Row>
