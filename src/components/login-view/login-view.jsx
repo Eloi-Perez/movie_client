@@ -17,7 +17,8 @@ export function LoginView(props) {
             Username: username,
             Password: password
         }, { headers: {
-            'Access-Control-Allow-Origin' : '*'
+            'Access-Control-Allow-Origin' : '*',
+            'Access-Control-Allow-Methods': 'POST'
         }} )
             .then(response => {
                 const data = response.data;
