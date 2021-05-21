@@ -16,9 +16,11 @@ export function LoginView(props) {
         axios.post('https://movie-api2.herokuapp.com/login', {
             Username: username,
             Password: password
-        }, { headers: {
-            'origin': window.location.href
-        }} )
+        }
+        // , { headers: {
+        //     'Access-Control-Allow-Origin' : '*',
+        // }} 
+        )
             .then(response => {
                 const data = response.data;
                 props.onLoggedIn(data);
