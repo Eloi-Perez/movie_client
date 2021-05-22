@@ -17,7 +17,7 @@ export function ProfileView(props) {
             console.log('is NOT same user');
             return false;
         }
-    }
+    };
 
     useEffect(() => {
         if (!sameUser()) {
