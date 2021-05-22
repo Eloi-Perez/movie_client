@@ -183,13 +183,12 @@ class MainView extends React.Component {
                                 <RegistrationView onLoggedIn={user => this.onLoggedIn(user)} onBackClick={() => history.goBack()} />
                             </Col>
                         }} />
-                        <Route path="/users/:username" render={({ match, history }) => {////////////////////////////////////////////////////////////
+                        <Route path="/users/:username" render={({ match, history }) => {
                             if (!user) return <Col> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
                             if (movies.length === 0) return <div className="main-view" />;
 
                             return <Col md={8}>
-                                <ProfileView userParam={match.params.username} getUserMovies={a => this.getUserMovies(a)} userMovies={userMovies} />
-                                {/* userMovies={this.getUserMovies(match.params.username).then()} //////////////////*/}
+                                <ProfileView userParam={match.params.username} getUserMovies={a => this.getUserMovies(a)} userMovies={userMovies} myMovies={myMovies} />
                             </Col>
                         }} />
                         <Route path="/users/:username/edit" render={({ match, history }) => {
