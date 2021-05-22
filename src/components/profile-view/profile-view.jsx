@@ -7,10 +7,22 @@ import Col from 'react-bootstrap/Col';
 import { MovieCard } from '../movie-card/movie-card';
 
 export function ProfileView(props) {
-    const { userParam, getUserMovies, userMovies } = props;
+    const { userParam, getUserMovies, userMovies, myMovies } = props;
+
+    const sameUser = () => {
+        if (userParam === localStorage.getItem('user')) {
+            console.log('is same user');
+            return true;
+        } else {
+            console.log('is NOT same user');
+            return false;
+        }
+    }
 
     useEffect(() => {
-        getUserMovies(userParam);
+        if (!sameUser()) {
+            getUserMovies(userParam);
+        }
     }, [userParam]);
     console.log(userMovies);
 
@@ -21,12 +33,28 @@ export function ProfileView(props) {
             <br /><br />
             <h2>Favorite Movies:</h2>
             <Row>{
-                userMovies &&
-                userMovies.map(m => {
-                    if (m.Favorite) {
-                    return ( <Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col> )
+                (function () {
+                    if (sameUser()) {
+                        return (
+                            myMovies &&
+                            myMovies.map(m => {
+                                console.log('test');
+                                if (m.Favorite) {
+                                    return (<Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col>)
+                                }
+                            })
+                        )
+                    } else {
+                        return (
+                            userMovies &&
+                            userMovies.map(m => {
+                                if (m.Favorite) {
+                                    return (<Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col>)
+                                }
+                            })
+                        )
                     }
-                })
+                })()
             }</Row>
             <br /><br />
             <Link to={`/users/${userParam}/edit`}>Edit Profile pesonal information</Link>
