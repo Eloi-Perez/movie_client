@@ -25,6 +25,7 @@ export function RegistrationView(props) {
                 props.onLoggedIn(data);
                 // location.assign('/');
                 // window.open('/', '_self'); // '_self' open in the current tab
+                //no redirection needed, once user is detected in state react will show main-view
             })
             .catch(err => {
                 console.log(err.response.data.errors[0]);
