@@ -3,7 +3,8 @@ import axios from 'axios';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Redirect, Link } from "react-router-dom";
 
-import { setMovies } from '../../actions/actions';
+// Redux
+import { setMovies, setUser, setMyMovies } from '../../actions/actions';
 import MoviesList from '../movies-list/movies-list';
 
 import { LoginView } from '../login-view/login-view';
@@ -29,8 +30,8 @@ class MainView extends React.Component {
         super();
         this.state = {
             // movies: [],
-            user: null,
-            myMovies: null,
+            // user: null,
+            // myMovies: null,
             userMovies: null
         }
     }
@@ -39,9 +40,10 @@ class MainView extends React.Component {
         let accessToken = localStorage.getItem('token');
         if (accessToken !== null) {
             let logUser = localStorage.getItem('user');
-            this.setState({
-                user: logUser
-            });
+            this.props.setUser(logUser)
+            // this.setState({
+            //     user: logUser
+            // });
             this.getMovies(accessToken);
             this.getMyMovies(logUser, accessToken);
         }
@@ -49,9 +51,7 @@ class MainView extends React.Component {
 
     /* After login, updates 'user' in state */
     onLoggedIn(authData) {
-        this.setState({
-            user: authData.Username
-        });
+        this.props.setUser(authData.Username);
         localStorage.setItem('token', authData.token);
         localStorage.setItem('user', authData.Username);
         this.getMovies(authData.token);
@@ -61,10 +61,12 @@ class MainView extends React.Component {
     onLoggedOut() {
         localStorage.removeItem('token');
         localStorage.removeItem('user');
-        this.setState({
-            user: null,
-            myMovies: null
-        });
+        this.props.setUser(null);
+        this.props.setMovies(null);
+        // this.setState({
+        //     user: null,
+        //     myMovies: null
+        // });
         return location.assign('/');
     }
 
@@ -88,9 +90,10 @@ class MainView extends React.Component {
             headers: { Authorization: `Bearer ${token}` }
         })
             .then(response => {
-                this.setState({
-                    myMovies: response.data.myMovies
-                });
+            this.props.setMyMovies(response.data.myMovies);
+                // this.setState({
+                //     myMovies: response.data.myMovies
+                // });
             })
             .catch(err => {
                 console.log(err);
@@ -116,25 +119,10 @@ class MainView extends React.Component {
                 console.log(err);
             });
     }
-    // async getUserMovies(user) {
-    //     let token = localStorage.getItem('token');
-    //     try {
-    //         const response = await axios.get(`https://movie-api2.herokuapp.com/users/${user}`, {
-    //             headers: { Authorization: `Bearer ${token}` }
-    //         });
-    //         this.setState({
-    //             userMovies: response.data.myMovies
-    //         });
-    //         console.log('getUserMovies executed');
-    //         return response.data.myMovies;
-    //     } catch (err) {
-    //         console.log(err);
-    //     }
-    // }
 
     render() {
-        const { movies } = this.props;
-        const { user, myMovies, userMovies } = this.state;
+        const { movies, user, myMovies } = this.props;  //from Redux
+        const { userMovies } = this.state;              //from Constructor state
 
         return (
             <Router>
@@ -168,7 +156,7 @@ class MainView extends React.Component {
                             if (!user) return <Col> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
                             if (movies.length === 0) return <div className="main-view" />;
 
-                            return <MoviesList movies={movies}/>;
+                            return <MoviesList movies={movies} />; //passed as a prop? needed?
                             // return movies.map(m => (
                             //     <Col md={3} key={m._id}>
                             //         <MovieCard movie={m} />
@@ -236,7 +224,11 @@ class MainView extends React.Component {
 }
 
 let mapStateToProps = state => {
-  return { movies: state.movies }
+    return {
+        movies: state.movies,
+        user: state.user,
+        myMovies: state.myMovies
+    }
 }
 
-export default connect(mapStateToProps, { setMovies } )(MainView);
+export default connect(mapStateToProps, { setMovies, setUser, setMyMovies })(MainView);
