@@ -141,11 +141,12 @@ class MainView extends React.Component {
                         </Nav.Item>
                         <Nav.Item as="li">
                             <LinkContainer to={`/users/Me4`}>
-                                <Nav.Link>Me4 Profile</Nav.Link>
+                                <Nav.Link>Profile of test user</Nav.Link>
                             </LinkContainer>
                         </Nav.Item>
+                        <Nav.Item className="flex-grow-1"></Nav.Item>
                         {!!user && (
-                            <Nav.Item as="li">
+                            <Nav.Item className="d-flex">
                                 <Button variant="secondary" onClick={a => this.onLoggedOut(a)}>logout</Button>
                             </Nav.Item>
                         )}
