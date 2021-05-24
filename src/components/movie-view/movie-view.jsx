@@ -17,7 +17,7 @@ import Form from 'react-bootstrap/Form';
 function MovieView(props) {
     const [checkedFav, setCheckedFav] = useState(false)
     const [checkedPlan, setCheckedPlan] = useState(false)
-    const [score, setScore] = useState("")
+    const [score, setScore] = useState(null)
     const { movie, myMovie, onBackClick } = props; //myMovies
 
     useEffect(() => {

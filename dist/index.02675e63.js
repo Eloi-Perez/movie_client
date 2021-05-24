@@ -38820,7 +38820,7 @@ try {
     _s();
     const [checkedFav, setCheckedFav] = _react.useState(false);
     const [checkedPlan, setCheckedPlan] = _react.useState(false);
-    const [score, setScore] = _react.useState("");
+    const [score, setScore] = _react.useState(null);
     const {movie, myMovie, onBackClick} = props;
     // myMovies
     _react.useEffect(() => {
@@ -39176,7 +39176,7 @@ try {
       }, "Back"))
     );
   }
-  _s(MovieView, "bVCGrUVNVRWpBclP20UvRaB1wTY=");
+  _s(MovieView, "mNHulC42lDjlPEoQttoqZu8Fpzg=");
   _c = MovieView;
   MovieView.propTypes = {
     movie: _propTypesDefault.default.shape({
