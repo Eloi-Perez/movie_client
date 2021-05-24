@@ -3,14 +3,22 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+import { setMyMovies } from '../../actions/actions';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-export function MovieView(props) {
+// const mapStateToProps = state => {
+//     const { myMovies } = state;
+//     return { myMovies };
+// };
+
+function MovieView(props) {
     const [checkedFav, setCheckedFav] = useState(false)
     const [checkedPlan, setCheckedPlan] = useState(false)
     const [score, setScore] = useState("")
-    const { movie, myMovie, onBackClick } = props;
+    const { movie, myMovie, onBackClick } = props; //myMovies
 
     useEffect(() => {
         if (!!myMovie) {
@@ -33,7 +41,9 @@ export function MovieView(props) {
     }
 
     const scoreFunc = () => {
-        if (score) { return score }
+        if (score) { 
+            return score;
+        }
     }
 
     const saveProperties = (e) => {
@@ -41,6 +51,8 @@ export function MovieView(props) {
         console.log('saving...');
         let storedUser = localStorage.getItem('user');
         let token = localStorage.getItem('token');
+        // let scoreToSend = () => {if (score === null) {return ""}};
+        console.log('axios score: ->' + score + '<-');
         axios.put(`https://movie-api2.herokuapp.com/users/${storedUser}/myMovies`, {
             Movie: movie.Title,
             Favorite: checkedFav,
@@ -48,15 +60,10 @@ export function MovieView(props) {
             Score: score
         }, {
             headers: { Authorization: `Bearer ${token}` }
-
         })
             .then(response => {
-                const data = response.data;
-                console.log(data);
+                props.setMyMovies(response.data.myMovies);
                 console.log('saved');
-                //update myMovie(need to be pass as a prop) <--------------------HERE--------------------
-                //data not being updated automatically, when you add a film, go out and back info not saved in react, only in DB, so you need to relog
-                //need to update myMovie with response.data
             })
             .catch(err => {
                 console.log(err.response.data);
@@ -130,3 +137,5 @@ MovieView.propTypes = {
     }).isRequired,
     onBackClick: PropTypes.func.isRequired
 };
+
+export default connect(null, { setMyMovies })(MovieView); //mapStateToProps

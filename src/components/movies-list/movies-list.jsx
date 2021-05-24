@@ -1,13 +1,17 @@
 import React from 'react';
-import Col from 'react-bootstrap/Col';
 import { connect } from 'react-redux';
 
 import VisibilityFilterInput from '../visibility-filter-input/visibility-filter-input';
 import { MovieCard } from '../movie-card/movie-card';
 
+import Col from 'react-bootstrap/Col';
+
+
+
+
 const mapStateToProps = state => {
-    const { visibilityFilter } = state;
-    return { visibilityFilter };
+    const { movies, visibilityFilter } = state;
+    return { movies, visibilityFilter };
 };
 
 function MoviesList(props) {

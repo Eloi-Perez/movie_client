@@ -1,12 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { connect } from 'react-redux';
+
+import { MovieCard } from '../movie-card/movie-card';
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import { MovieCard } from '../movie-card/movie-card';
 
-export function ProfileView(props) {
+const mapStateToProps = state => {
+    const { myMovies } = state;
+    return { myMovies };
+};
+
+function ProfileView(props) {
     const { userParam, getUserMovies, userMovies, myMovies } = props;
 
     const sameUser = () => {
@@ -24,7 +31,7 @@ export function ProfileView(props) {
             getUserMovies(userParam);
         }
     }, [userParam]);
-    console.log(userMovies);
+    // console.log(userMovies);
 
     return (
         <div>
@@ -38,7 +45,6 @@ export function ProfileView(props) {
                         return (
                             myMovies &&
                             myMovies.map(m => {
-                                console.log('test');
                                 if (m.Favorite) {
                                     return (<Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col>)
                                 }
@@ -63,3 +69,5 @@ export function ProfileView(props) {
     );
 
 }
+
+export default connect(mapStateToProps)(ProfileView);
