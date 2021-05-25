@@ -6,7 +6,7 @@ It's a React project, using hooks, Redux for the state management and react-rout
 
 SCSS and React-Bootstrap for the styling.
 
-
+---
 
 And I'm using Parcel-Bundler for the building in Netlify, where this project is hosted.
 
