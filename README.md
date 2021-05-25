@@ -1,8 +1,8 @@
 # movie_client
 
-This repo is the client-side of movie_API
+This repo is the client-side of [movie_API](https://github.com/Eloi-Perez/movie_api)
 
-It's a React project, using hooks, Redux for the state management and react-router for the navigation.
+It's a React project, using Hooks, Redux for the state management and React-Router for the navigation.
 
 SCSS and React-Bootstrap for the styling.
 
