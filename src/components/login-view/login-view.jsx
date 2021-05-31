@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
+// import { fetchUserAction } from '../../actions/actions'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -26,6 +27,15 @@ export function LoginView(props) {
                 console.log('no such user')
             });
     };
+
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const user = await fetchUserAction(username,password )
+
+    //             props.onLoggedIn(user);
+
+    // };
 
     return (
         <div>
