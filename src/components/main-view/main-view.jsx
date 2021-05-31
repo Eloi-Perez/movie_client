@@ -75,11 +75,28 @@ class MainView extends React.Component {
         })
             .then(response => {
                 this.props.setMovies(response.data);
+                console.log(response.data);
             })
             .catch(err => {
                 console.log(err);
             });
     }
+
+    getDirector(name) {
+        let token = localStorage.getItem('token');
+        axios.get(`https://movie-api2.herokuapp.com/movies/${name}`, {
+            headers: { Authorization: `Bearer ${token}` }
+        })
+            .then(response => {
+                this.props.setMovies(response.data);
+                console.log(response.data);
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    }
+
+
 
     getMyMovies(user, token) {
         axios.get(`https://movie-api2.herokuapp.com/users/${user}`, {
@@ -127,21 +144,23 @@ class MainView extends React.Component {
                                 <Nav.Link>Home</Nav.Link>
                             </LinkContainer>
                         </Nav.Item>
-                        <Nav.Item as="li">
-                            <LinkContainer to={`/users/${user}`}>
-                                <Nav.Link>Profile</Nav.Link>
-                            </LinkContainer>
-                        </Nav.Item>
-                        <Nav.Item as="li">
-                            <LinkContainer to={`/users/Me4`}>
-                                <Nav.Link>Profile of test user</Nav.Link>
-                            </LinkContainer>
-                        </Nav.Item>
-                        <Nav.Item className="flex-grow-1"></Nav.Item>
                         {!!user && (
-                            <Nav.Item className="d-flex">
-                                <Button variant="secondary" onClick={a => this.onLoggedOut(a)}>logout</Button>
-                            </Nav.Item>
+                            <>
+                                <Nav.Item as="li">
+                                    <LinkContainer to={`/users/${user}`}>
+                                        <Nav.Link>Profile</Nav.Link>
+                                    </LinkContainer>
+                                </Nav.Item>
+                                <Nav.Item as="li">
+                                    <LinkContainer to={`/users/testUser`}>
+                                        <Nav.Link>Profile of test User</Nav.Link>
+                                    </LinkContainer>
+                                </Nav.Item>
+                                <Nav.Item className="flex-grow-1"></Nav.Item>
+                                <Nav.Item className="d-flex">
+                                    <Button variant="secondary" onClick={a => this.onLoggedOut(a)}>logout</Button>
+                                </Nav.Item>
+                            </>
                         )}
                     </Nav>
 
