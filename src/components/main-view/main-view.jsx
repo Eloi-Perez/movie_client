@@ -75,28 +75,11 @@ class MainView extends React.Component {
         })
             .then(response => {
                 this.props.setMovies(response.data);
-                console.log(response.data);
             })
             .catch(err => {
                 console.log(err);
             });
     }
-
-    getDirector(name) {
-        let token = localStorage.getItem('token');
-        axios.get(`https://movie-api2.herokuapp.com/movies/${name}`, {
-            headers: { Authorization: `Bearer ${token}` }
-        })
-            .then(response => {
-                this.props.setMovies(response.data);
-                console.log(response.data);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-
 
     getMyMovies(user, token) {
         axios.get(`https://movie-api2.herokuapp.com/users/${user}`, {
