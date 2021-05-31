@@ -24,3 +24,25 @@ export function setMyMovies(value) {
 // export function setUserMovies(value) {
 //     return { type: SET_USERMOVIES, value };
 // }
+// export const fetchUserAction = async (username,password) => {
+//     try {
+//         const res = await axios.post('https://movie-api2.herokuapp.com/login', {
+//             Username: username,
+//             Password: password
+//         })
+//         return res.data;
+//         //     props.onLoggedIn(data);
+//         // res
+//     } catch (error) {
+//         console.log('no such user')
+//     }
+
+        // .then(response => {
+        //     const data = response.data;
+        //     props.onLoggedIn(data);
+        // })
+        // .catch(e => {
+        //     // console.log(e)
+        //     console.log('no such user')
+        // });
+// }
