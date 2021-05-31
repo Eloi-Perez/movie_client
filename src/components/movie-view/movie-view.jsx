@@ -15,9 +15,9 @@ import Form from 'react-bootstrap/Form';
 // };
 
 function MovieView(props) {
-    const [checkedFav, setCheckedFav] = useState(false)
-    const [checkedPlan, setCheckedPlan] = useState(false)
-    const [score, setScore] = useState(null)
+    const [checkedFav, setCheckedFav] = useState(false);
+    const [checkedPlan, setCheckedPlan] = useState(false);
+    const [score, setScore] = useState(null);
     const { movie, myMovie, onBackClick } = props; //myMovies
 
     useEffect(() => {
@@ -30,10 +30,11 @@ function MovieView(props) {
     }, []); //loading only once
 
     const switchFavorite = (e) => {
-        checkedFav ? setCheckedFav(false) : setCheckedFav(true);
+        // checkedFav ? setCheckedFav(false) : setCheckedFav(true);
+        setCheckedFav(!checkedFav);
     }
     const switchPlan = (e) => {
-        checkedPlan ? setCheckedPlan(false) : setCheckedPlan(true);
+        setCheckedPlan(!checkedPlan);
     }
     const switchScore = (val) => {
         let numVal = parseInt(val);
@@ -41,7 +42,7 @@ function MovieView(props) {
     }
 
     const scoreFunc = () => {
-        if (score) { 
+        if (score) {
             return score;
         }
     }
@@ -77,10 +78,20 @@ function MovieView(props) {
             <div className="movie-poster">
                 <img src={`https://movie-api2.herokuapp.com${movie.ImagePath}`} />
             </div>
+            <br />
             <div className="movie-title">
                 <span className="label">Title: </span>
-                <span className="value">{movie.Title}</span>
+                <span className="value h3">{movie.Title}</span>
+                <span>  Director: </span>
+                <Link to={`/directors/${movie.Director.Name}`}>
+                    <Button variant="link">{movie.Director.Name}</Button>
+                </Link>
+                <span> Genre: </span>
+                <Link to={`/genres/${movie.Genre.Name}`}>
+                    <Button variant="link">{movie.Genre.Name}</Button>
+                </Link>
             </div>
+
             <div className="movie-description">
                 <span className="label">Description: </span>
                 <span className="value">{movie.Description}</span>
@@ -103,21 +114,15 @@ function MovieView(props) {
                     <Form.Label>Score</Form.Label>
                     <Form.Control as="select" value={scoreFunc()} onChange={e => switchScore(e.target.value)}>
                         <option value="" >Choose Score</option>
-                        <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                        {[...Array(11).keys()].map(num => <option key={num}>{num}</option>)}
+                        {/* <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option> */}
 
                     </Form.Control>
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={saveProperties}>Save changes</Button>
             </Form>
 
-            <br /><br />
-            <Link to={`/directors/${movie.Director.Name}`}>
-                <Button variant="link">Director</Button>
-            </Link>
-            <Link to={`/genres/${movie.Genre.Name}`}>
-                <Button variant="link">Genre</Button>
-            </Link>
-
+            <br />
             <button onClick={() => { onBackClick() }}>Back</button>
         </div>
     );
