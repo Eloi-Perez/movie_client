@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from "react-router-dom";
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -75,7 +74,7 @@ export function ProfileEditView(props) {
     };
     return (
         <div>
-            <br />
+            <br /><br /><br />
             <button onClick={() => { onBackClick() }}>Back</button>
             <br /><br />
             <h3>FORM EDIT INFO</h3>
@@ -116,6 +115,7 @@ export function ProfileEditView(props) {
                 </Form.Group>
                 <Button variant="danger" type="submit" onClick={deleteUser}>DELETE Acount</Button>
             </Form>
+            <br /><br />
         </div>
     )
 
