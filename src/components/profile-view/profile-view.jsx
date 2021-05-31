@@ -8,30 +8,25 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
 
-const mapStateToProps = state => {
-    const { myMovies } = state;
-    return { myMovies };
-};
-
 function ProfileView(props) {
+    const [sameUser, setSameUser] = useState(true);
     const { userParam, getUserMovies, userMovies, myMovies } = props;
 
-    const sameUser = () => {
-        if (userParam === localStorage.getItem('user')) {
-            console.log('is same user');
-            return true;
-        } else {
-            console.log('is NOT same user');
-            return false;
-        }
-    };
-
     useEffect(() => {
-        if (!sameUser()) {
-            getUserMovies(userParam);
-        }
+        // (async () => {
+        //     try {
+                if (userParam === localStorage.getItem('user')) {
+                    setSameUser(true);
+                    console.log('is same user');
+                } else {
+                    getUserMovies(userParam);
+                    setSameUser(false);
+                    console.log('is NOT same user');
+                }
+                // console.log(sameUser);
+        //     } catch (e) { console.error(e) }
+        // })()
     }, [userParam]);
-    // console.log(userMovies);
 
     return (
         <div>
@@ -41,7 +36,7 @@ function ProfileView(props) {
             <h2>Favorite Movies:</h2>
             <Row>{
                 (function () {
-                    if (sameUser()) {
+                    if (sameUser) {
                         return (
                             myMovies &&
                             myMovies.map(m => {
@@ -62,12 +57,17 @@ function ProfileView(props) {
                     }
                 })()
             }</Row>
-            <br /><br />
-            <Link to={`/users/${userParam}/edit`}>Edit Profile pesonal information</Link>
-            <br /><br />
+            { sameUser &&
+                <Link to={`/users/${userParam}/edit`}>Edit Profile pesonal information</Link>
+            }
         </div>
     );
 
 }
+
+const mapStateToProps = state => {
+    const { myMovies } = state;
+    return { myMovies };
+};
 
 export default connect(mapStateToProps)(ProfileView);
