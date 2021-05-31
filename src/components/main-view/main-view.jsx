@@ -20,10 +20,14 @@ import { GenreView } from '../genre-view/genre-view';
 // import { MovieCard } from '../movie-card/movie-card'; //moved inside MoviesList
 
 import { LinkContainer } from 'react-router-bootstrap'
-import Nav from 'react-bootstrap/Nav'
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
+import Image from 'react-bootstrap/Image'
+
+import imgWelcome from '../../assets/welcome-stephen-hawking.jpg';
 
 
 class MainView extends React.Component {
@@ -119,12 +123,12 @@ class MainView extends React.Component {
 
         return (
             <Router>
-                <div className="main-view">
+                <div className="main-view"><Container fluid>
 
                     <Nav variant="tabs" defaultActiveKey="/">
-                        <Nav.Item as="li">
+                        <Nav.Item as="li" className="d-flex">
                             <LinkContainer to="/">
-                                <Nav.Link>Home</Nav.Link>
+                                <Button variant="primary">Home</Button>
                             </LinkContainer>
                         </Nav.Item>
                         {!!user && (
@@ -146,10 +150,23 @@ class MainView extends React.Component {
                             </>
                         )}
                     </Nav>
-
+                    <br />
                     <Row className="justify-content-md-center">
                         <Route exact path="/" render={() => {
-                            if (!user) return <Col> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
+                            if (!user) return <><Col xs={12}  md={6}> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
+                            <Col xs={12} md={6}>
+                            <Image src={imgWelcome} rounded fluid />
+                            <br /><br />
+                            <h4>Welcome to the online database of films about Time Traveling.</h4>
+                            <br />
+                            <h5>Spoiler Alert: Some of the films listed here don't reveal that some kind of time travel happens until later in the storyline.</h5>
+                            <p>(More films to be added.)</p>
+                            <br />
+                            <h6>To know more about how I developed this React website visit:<br />
+                            <Link to={{ pathname: "https://github.com/Eloi-Perez/movie_client" }} target="_blank" rel="noopener noreferrer">github.com/Eloi-Perez/movie_client</Link>
+                            </h6>
+                            </Col>
+                            </>
                             if (movies.length === 0) return <div className="main-view" />;
 
                             return <MoviesList />; //passed as a prop? needed?  // movies={movies}
@@ -168,6 +185,7 @@ class MainView extends React.Component {
                             </Col>
                         }} />
                         <Route path="/users/:username" render={({ match, history }) => {
+                            // if (!user) return <Redirect to="/" />
                             if (!user) return <Col> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
                             if (movies.length === 0) return <div className="main-view" />;
 
@@ -183,7 +201,7 @@ class MainView extends React.Component {
                                 <ProfileEditView userParam={match.params.username} onLoggedOut={a => this.onLoggedOut(a)} onBackClick={() => history.goBack()} />
                             </Col>
                         }} />
-
+                        
                         {/* Movie Routes */}
                         <Route path="/movies/:movieId" render={({ match, history }) => {
                             if (!user) return <Col> <LoginView onLoggedIn={user => this.onLoggedIn(user)} /></Col>
@@ -214,6 +232,7 @@ class MainView extends React.Component {
                             </Col>
                         }} />
                     </Row>
+                </Container>
                 </div>
             </Router>
 

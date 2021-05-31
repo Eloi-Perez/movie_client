@@ -74,8 +74,8 @@ export function ProfileEditView(props) {
     };
     return (
         <div>
-            <br /><br /><br />
-            <button onClick={() => { onBackClick() }}>Back</button>
+            <br />
+            <Button onClick={() => { onBackClick() }}>Back</Button>
             <br /><br />
             <h3>FORM EDIT INFO</h3>
             <Form>
