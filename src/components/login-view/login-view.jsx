@@ -29,6 +29,7 @@ export function LoginView(props) {
                 // console.log(e)
                 console.log('no such user')
                 setMsg('The username or password is incorrect');
+                setTimeout(() => setMsg(''), 2500);
             });
     };
 

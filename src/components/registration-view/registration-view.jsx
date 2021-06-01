@@ -33,6 +33,7 @@ export function RegistrationView(props) {
                 console.log(err.response.data.errors[0]);
                 console.error(err)
                 setMsg(err.response.data.errors[0].msg);
+                setTimeout(() => setMsg(''), 2500);
             });
     };
 

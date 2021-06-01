@@ -67,12 +67,14 @@ function MovieView(props) {
                 props.setMyMovies(response.data.myMovies);
                 console.log('saved');
                 setMsg('Saved!');
+                setTimeout(() => setMsg(''), 2500);
             })
             .catch(err => {
                 console.log(err.response.data);
                 // console.log(err.response.data.errors[0]);
                 console.error(err)
                 setMsg('Error');
+                setTimeout(() => setMsg(''), 2500);
             });
     }
 

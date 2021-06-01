@@ -44,6 +44,7 @@ export function ProfileEditView(props) {
                     console.log(err);
                     console.log('user or password incorrect')
                     setMsg('Error');
+                    setTimeout(() => setMsg(''), 2500);
                 });
         }
     };
@@ -72,6 +73,7 @@ export function ProfileEditView(props) {
                     console.log(err);
                     console.log('password incorrect')
                     setMsgDel("Password incorrect");
+                    setTimeout(() => setMsgDel(''), 2500);
                 });
         }
     };
