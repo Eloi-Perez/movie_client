@@ -18,6 +18,7 @@ function MovieView(props) {
     const [checkedFav, setCheckedFav] = useState(false);
     const [checkedPlan, setCheckedPlan] = useState(false);
     const [score, setScore] = useState(null);
+    const [msg, setMsg] = useState('');
     const { movie, myMovie, onBackClick } = props; //myMovies
 
     useEffect(() => {
@@ -65,11 +66,13 @@ function MovieView(props) {
             .then(response => {
                 props.setMyMovies(response.data.myMovies);
                 console.log('saved');
+                setMsg('Saved!');
             })
             .catch(err => {
                 console.log(err.response.data);
                 // console.log(err.response.data.errors[0]);
                 console.error(err)
+                setMsg('Error');
             });
     }
 
@@ -120,10 +123,11 @@ function MovieView(props) {
                     </Form.Control>
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={saveProperties}>Save changes</Button>
+                <span className="red"> {msg}</span>
             </Form>
 
             <br />
-            <button onClick={() => { onBackClick() }}>Back</button>
+            <Button variant="secondary" onClick={() => { onBackClick() }}>Back</Button>
         </div>
     );
 }

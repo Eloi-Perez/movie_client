@@ -7,9 +7,12 @@ import { Link } from "react-router-dom";
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+import './login-view.scss';
+
 export function LoginView(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [msg, setMsg] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,6 +28,7 @@ export function LoginView(props) {
             .catch(e => {
                 // console.log(e)
                 console.log('no such user')
+                setMsg('The username or password is incorrect');
             });
     };
 
@@ -51,6 +55,7 @@ export function LoginView(props) {
                 </Form.Group>
 
                 <Button variant="primary" type="submit" onClick={handleSubmit}>Login</Button>
+                <span className="red"> {msg}</span>
             </Form>
             <br />
             <h5>Thank you for visiting, Login or register a free account to access all the content.</h5>

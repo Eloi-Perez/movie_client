@@ -5,11 +5,13 @@ import PropTypes from 'prop-types';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
+
 export function RegistrationView(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [birthdate, setBirthdate] = useState('');
+    const [msg, setMsg] = useState('');
 
     const handleRegister = (e) => {
         e.preventDefault();
@@ -30,7 +32,7 @@ export function RegistrationView(props) {
             .catch(err => {
                 console.log(err.response.data.errors[0]);
                 console.error(err)
-                // console.log('error registering the user')
+                setMsg(err.response.data.errors[0].msg);
             });
     };
 
@@ -58,10 +60,11 @@ export function RegistrationView(props) {
                 </Form.Group>
 
                 <Button variant="primary" type="submit" onClick={handleRegister}>Register</Button>
+                <span className="red"> {msg}</span>
+                {/* missing form JS instant validation */}
             </Form>
             <br />
             <Button variant="secondary" onClick={props.onBackClick}>Log In with existing User</Button>
-            {/* <button onClick={() => { onBackClick() }}>Back</button> */}
         </div>
     );
 }

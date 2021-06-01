@@ -27,6 +27,7 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Image from 'react-bootstrap/Image'
 
+import './main-view.scss';
 import imgWelcome from '../../assets/welcome-stephen-hawking.jpg';
 
 

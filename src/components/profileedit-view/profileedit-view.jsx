@@ -5,7 +5,6 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
 
-
 export function ProfileEditView(props) {
     const [putPassword, setPutPassword] = useState('');
     const [newUsername, setNewUsername] = useState('');
@@ -14,34 +13,8 @@ export function ProfileEditView(props) {
     const [birthdate, setBirthdate] = useState('');
     const [delPassword, setDelPassword] = useState('');
     const { userParam, onLoggedOut, onBackClick } = props;
-
-
-    const deleteUser = (e) => {
-        e.preventDefault();
-        let storedUser = localStorage.getItem('user');
-        let delAlert = confirm(`Are you sure that you want to\ndelete permantly: ${storedUser} ?`);
-        if (delAlert) {
-            console.log('deleting...');
-            console.log(delPassword);
-
-            let payload = {
-                Username: storedUser,
-                Password: delPassword
-            };
-
-            axios.delete('https://movie-api2.herokuapp.com/users', { data: payload }) // http://localhost:8080/users
-                .then(response => {
-                    console.log(response.data);
-                    console.log("deleted");
-                    onLoggedOut();
-                })
-                .catch((err) => {
-                    console.log(err);
-                    //send error to DOM
-                    console.log('user or password incorrect')
-                });
-        }
-    };
+    const [msg, setMsg] = useState('');
+    const [msgDel, setMsgDel] = useState('');
 
     const updateUser = (e) => {
         e.preventDefault();
@@ -64,18 +37,49 @@ export function ProfileEditView(props) {
                 .then(response => {
                     console.log(response.data);
                     console.log("updated");
+                    setMsg('Updated Successfully!');
+                    //log out and ask to login again? or update token?
                 })
                 .catch((err) => {
                     console.log(err);
-                    //send error to DOM
                     console.log('user or password incorrect')
+                    setMsg('Error');
                 });
         }
     };
+
+    const deleteUser = (e) => {
+        e.preventDefault();
+        let storedUser = localStorage.getItem('user');
+        let delAlert = confirm(`Are you sure that you want to\ndelete permantly: ${storedUser} ?`);
+        if (delAlert) {
+            console.log('deleting...');
+            console.log(delPassword);
+
+            let payload = {
+                Username: storedUser,
+                Password: delPassword
+            };
+
+            axios.delete('https://movie-api2.herokuapp.com/users', { data: payload }) // http://localhost:8080/users
+                .then(response => {
+                    console.log(response.data);
+                    console.log("deleted");
+                    //send deleted to DOM?
+                    onLoggedOut();
+                })
+                .catch((err) => {
+                    console.log(err);
+                    console.log('password incorrect')
+                    setMsgDel("Password incorrect");
+                });
+        }
+    };
+
     return (
         <div>
             <br />
-            <Button onClick={() => { onBackClick() }}>Back</Button>
+            <Button variant="secondary" onClick={() => { onBackClick() }}>Back</Button>
             <br /><br />
             <h3>FORM EDIT INFO</h3>
             <Form>
@@ -105,6 +109,7 @@ export function ProfileEditView(props) {
                 </Form.Group>
 
                 <Button variant="warning" type="submit" onClick={updateUser}>Update Acount</Button>
+                <span className="red"> {msg}</span>
             </Form>
             <br /><br /><br /><br />
             <h3>FORM DELETE ACCOUNT</h3>
@@ -114,6 +119,7 @@ export function ProfileEditView(props) {
                     <Form.Control type="password" onChange={e => setDelPassword(e.target.value)} />
                 </Form.Group>
                 <Button variant="danger" type="submit" onClick={deleteUser}>DELETE Acount</Button>
+                <span className="red"> {msgDel}</span>
             </Form>
             <br /><br />
         </div>

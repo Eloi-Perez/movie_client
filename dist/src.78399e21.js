@@ -40493,7 +40493,79 @@ Button.displayName = 'Button';
 Button.defaultProps = defaultProps;
 var _default = Button;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","classnames":"../node_modules/classnames/index.js","react":"../node_modules/react/index.js","./ThemeProvider":"../node_modules/react-bootstrap/esm/ThemeProvider.js","./SafeAnchor":"../node_modules/react-bootstrap/esm/SafeAnchor.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"components/login-view/login-view.jsx":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","classnames":"../node_modules/classnames/index.js","react":"../node_modules/react/index.js","./ThemeProvider":"../node_modules/react-bootstrap/esm/ThemeProvider.js","./SafeAnchor":"../node_modules/react-bootstrap/esm/SafeAnchor.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"components/login-view/login-view.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"components/login-view/login-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40512,6 +40584,8 @@ var _reactRouterDom = require("react-router-dom");
 var _Form = _interopRequireDefault(require("react-bootstrap/Form"));
 
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
+
+require("./login-view.scss");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -40542,6 +40616,11 @@ function LoginView(props) {
       password = _useState4[0],
       setPassword = _useState4[1];
 
+  var _useState5 = (0, _react.useState)(''),
+      _useState6 = _slicedToArray(_useState5, 2),
+      msg = _useState6[0],
+      setMsg = _useState6[1];
+
   var handleSubmit = function handleSubmit(e) {
     e.preventDefault();
     /* Send a request to the server for authentication */
@@ -40555,6 +40634,7 @@ function LoginView(props) {
     }).catch(function (e) {
       // console.log(e)
       console.log('no such user');
+      setMsg('The username or password is incorrect');
     });
   }; // const handleSubmit = async (e) => {
   //     e.preventDefault();
@@ -40581,7 +40661,9 @@ function LoginView(props) {
     variant: "primary",
     type: "submit",
     onClick: handleSubmit
-  }, "Login")), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("h5", null, "Thank you for visiting, Login or register a free account to access all the content."), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
+  }, "Login"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "red"
+  }, " ", msg)), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("h5", null, "Thank you for visiting, Login or register a free account to access all the content."), /*#__PURE__*/_react.default.createElement(_reactRouterDom.Link, {
     to: '/register'
   }, /*#__PURE__*/_react.default.createElement(_Button.default, {
     variant: "secondary"
@@ -40591,7 +40673,7 @@ function LoginView(props) {
 LoginView.propTypes = {
   onLoggedIn: _propTypes.default.func.isRequired
 };
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js"}],"components/profileedit-view/profileedit-view.jsx":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","prop-types":"../node_modules/prop-types/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","./login-view.scss":"components/login-view/login-view.scss"}],"components/profileedit-view/profileedit-view.jsx":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -40660,33 +40742,15 @@ function ProfileEditView(props) {
       onLoggedOut = props.onLoggedOut,
       onBackClick = props.onBackClick;
 
-  var deleteUser = function deleteUser(e) {
-    e.preventDefault();
-    var storedUser = localStorage.getItem('user');
-    var delAlert = confirm("Are you sure that you want to\ndelete permantly: ".concat(storedUser, " ?"));
+  var _useState13 = (0, _react.useState)(''),
+      _useState14 = _slicedToArray(_useState13, 2),
+      msg = _useState14[0],
+      setMsg = _useState14[1];
 
-    if (delAlert) {
-      console.log('deleting...');
-      console.log(delPassword);
-      var payload = {
-        Username: storedUser,
-        Password: delPassword
-      };
-
-      _axios.default.delete('https://movie-api2.herokuapp.com/users', {
-        data: payload
-      }) // http://localhost:8080/users
-      .then(function (response) {
-        console.log(response.data);
-        console.log("deleted");
-        onLoggedOut();
-      }).catch(function (err) {
-        console.log(err); //send error to DOM
-
-        console.log('user or password incorrect');
-      });
-    }
-  };
+  var _useState15 = (0, _react.useState)(''),
+      _useState16 = _slicedToArray(_useState15, 2),
+      msgDel = _useState16[0],
+      setMsgDel = _useState16[1];
 
   var updateUser = function updateUser(e) {
     e.preventDefault();
@@ -40708,15 +40772,46 @@ function ProfileEditView(props) {
       _axios.default.put('https://movie-api2.herokuapp.com/users', payload).then(function (response) {
         console.log(response.data);
         console.log("updated");
+        setMsg('Updated Successfully!'); //log out and ask to login again? or update token?
       }).catch(function (err) {
-        console.log(err); //send error to DOM
-
+        console.log(err);
         console.log('user or password incorrect');
+        setMsg('Error');
+      });
+    }
+  };
+
+  var deleteUser = function deleteUser(e) {
+    e.preventDefault();
+    var storedUser = localStorage.getItem('user');
+    var delAlert = confirm("Are you sure that you want to\ndelete permantly: ".concat(storedUser, " ?"));
+
+    if (delAlert) {
+      console.log('deleting...');
+      console.log(delPassword);
+      var payload = {
+        Username: storedUser,
+        Password: delPassword
+      };
+
+      _axios.default.delete('https://movie-api2.herokuapp.com/users', {
+        data: payload
+      }) // http://localhost:8080/users
+      .then(function (response) {
+        console.log(response.data);
+        console.log("deleted"); //send deleted to DOM?
+
+        onLoggedOut();
+      }).catch(function (err) {
+        console.log(err);
+        console.log('password incorrect');
+        setMsgDel("Password incorrect");
       });
     }
   };
 
   return /*#__PURE__*/_react.default.createElement("div", null, /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    variant: "secondary",
     onClick: function onClick() {
       onBackClick();
     }
@@ -40759,7 +40854,9 @@ function ProfileEditView(props) {
     variant: "warning",
     type: "submit",
     onClick: updateUser
-  }, "Update Acount")), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("h3", null, "FORM DELETE ACCOUNT"), /*#__PURE__*/_react.default.createElement(_Form.default, null, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
+  }, "Update Acount"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "red"
+  }, " ", msg)), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("h3", null, "FORM DELETE ACCOUNT"), /*#__PURE__*/_react.default.createElement(_Form.default, null, /*#__PURE__*/_react.default.createElement(_Form.default.Group, {
     controlId: "formDelPassword"
   }, /*#__PURE__*/_react.default.createElement(_Form.default.Label, null, "Password:"), /*#__PURE__*/_react.default.createElement(_Form.default.Control, {
     type: "password",
@@ -40770,7 +40867,9 @@ function ProfileEditView(props) {
     variant: "danger",
     type: "submit",
     onClick: deleteUser
-  }, "DELETE Acount")), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null));
+  }, "DELETE Acount"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "red"
+  }, " ", msgDel)), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("br", null));
 }
 },{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-bootstrap/Form":"../node_modules/react-bootstrap/esm/Form.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js"}],"components/registration-view/registration-view.jsx":[function(require,module,exports) {
 "use strict";
@@ -40829,6 +40928,11 @@ function RegistrationView(props) {
       birthdate = _useState8[0],
       setBirthdate = _useState8[1];
 
+  var _useState9 = (0, _react.useState)(''),
+      _useState10 = _slicedToArray(_useState9, 2),
+      msg = _useState10[0],
+      setMsg = _useState10[1];
+
   var handleRegister = function handleRegister(e) {
     e.preventDefault();
 
@@ -40845,7 +40949,8 @@ function RegistrationView(props) {
       //no redirection needed, once user is detected in state react will show main-view
     }).catch(function (err) {
       console.log(err.response.data.errors[0]);
-      console.error(err); // console.log('error registering the user')
+      console.error(err);
+      setMsg(err.response.data.errors[0].msg);
     });
   };
 
@@ -40881,7 +40986,9 @@ function RegistrationView(props) {
     variant: "primary",
     type: "submit",
     onClick: handleRegister
-  }, "Register")), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
+  }, "Register"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "red"
+  }, " ", msg)), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
     variant: "secondary",
     onClick: props.onBackClick
   }, "Log In with existing User"));
@@ -41843,6 +41950,11 @@ function MovieView(props) {
       score = _useState6[0],
       setScore = _useState6[1];
 
+  var _useState7 = (0, _react.useState)(''),
+      _useState8 = _slicedToArray(_useState7, 2),
+      msg = _useState8[0],
+      setMsg = _useState8[1];
+
   var movie = props.movie,
       myMovie = props.myMovie,
       onBackClick = props.onBackClick; //myMovies
@@ -41896,10 +42008,12 @@ function MovieView(props) {
     }).then(function (response) {
       props.setMyMovies(response.data.myMovies);
       console.log('saved');
+      setMsg('Saved!');
     }).catch(function (err) {
       console.log(err.response.data); // console.log(err.response.data.errors[0]);
 
       console.error(err);
+      setMsg('Error');
     });
   };
 
@@ -41965,7 +42079,10 @@ function MovieView(props) {
     variant: "primary",
     type: "submit",
     onClick: saveProperties
-  }, "Save changes")), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement("button", {
+  }, "Save changes"), /*#__PURE__*/_react.default.createElement("span", {
+    className: "red"
+  }, " ", msg)), /*#__PURE__*/_react.default.createElement("br", null), /*#__PURE__*/_react.default.createElement(_Button.default, {
+    variant: "secondary",
     onClick: function onClick() {
       onBackClick();
     }
@@ -43551,7 +43668,12 @@ Image.displayName = 'Image';
 Image.defaultProps = defaultProps;
 var _default = Image;
 exports.default = _default;
-},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","classnames":"../node_modules/classnames/index.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./ThemeProvider":"../node_modules/react-bootstrap/esm/ThemeProvider.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"assets/welcome-stephen-hawking.jpg":[function(require,module,exports) {
+},{"@babel/runtime/helpers/esm/extends":"../node_modules/@babel/runtime/helpers/esm/extends.js","@babel/runtime/helpers/esm/objectWithoutPropertiesLoose":"../node_modules/@babel/runtime/helpers/esm/objectWithoutPropertiesLoose.js","classnames":"../node_modules/classnames/index.js","react":"../node_modules/react/index.js","prop-types":"../node_modules/prop-types/index.js","./ThemeProvider":"../node_modules/react-bootstrap/esm/ThemeProvider.js","react/jsx-runtime":"../node_modules/react/jsx-runtime.js"}],"components/main-view/main-view.scss":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"assets/welcome-stephen-hawking.jpg":[function(require,module,exports) {
 module.exports = "/welcome-stephen-hawking.25dfe1e3.jpg";
 },{}],"components/main-view/main-view.jsx":[function(require,module,exports) {
 "use strict";
@@ -43600,6 +43722,8 @@ var _Col = _interopRequireDefault(require("react-bootstrap/Col"));
 var _Button = _interopRequireDefault(require("react-bootstrap/Button"));
 
 var _Image = _interopRequireDefault(require("react-bootstrap/Image"));
+
+require("./main-view.scss");
 
 var _welcomeStephenHawking = _interopRequireDefault(require("../../assets/welcome-stephen-hawking.jpg"));
 
@@ -43982,74 +44106,7 @@ var _default = (0, _reactRedux.connect)(mapStateToProps, {
 })(MainView);
 
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../../actions/actions":"actions/actions.js","../login-view/login-view":"components/login-view/login-view.jsx","../profileedit-view/profileedit-view":"components/profileedit-view/profileedit-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../movies-list/movies-list":"components/movies-list/movies-list.jsx","../profile-view/profile-view":"components/profile-view/profile-view.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../director-view/director-view":"components/director-view/director-view.jsx","../genre-view/genre-view":"components/genre-view/genre-view.jsx","react-router-bootstrap":"../node_modules/react-router-bootstrap/lib/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","react-bootstrap/Nav":"../node_modules/react-bootstrap/esm/Nav.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Image":"../node_modules/react-bootstrap/esm/Image.js","../../assets/welcome-stephen-hawking.jpg":"assets/welcome-stephen-hawking.jpg"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
-
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
-  }
-
-  return bundleURL;
-}
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)?\/[^/]+(?:\?.*)?$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"../node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"index.scss":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","axios":"../node_modules/axios/index.js","react-redux":"../node_modules/react-redux/es/index.js","react-router-dom":"../node_modules/react-router-dom/esm/react-router-dom.js","../../actions/actions":"actions/actions.js","../login-view/login-view":"components/login-view/login-view.jsx","../profileedit-view/profileedit-view":"components/profileedit-view/profileedit-view.jsx","../registration-view/registration-view":"components/registration-view/registration-view.jsx","../movies-list/movies-list":"components/movies-list/movies-list.jsx","../profile-view/profile-view":"components/profile-view/profile-view.jsx","../movie-view/movie-view":"components/movie-view/movie-view.jsx","../director-view/director-view":"components/director-view/director-view.jsx","../genre-view/genre-view":"components/genre-view/genre-view.jsx","react-router-bootstrap":"../node_modules/react-router-bootstrap/lib/index.js","react-bootstrap/Container":"../node_modules/react-bootstrap/esm/Container.js","react-bootstrap/Nav":"../node_modules/react-bootstrap/esm/Nav.js","react-bootstrap/Row":"../node_modules/react-bootstrap/esm/Row.js","react-bootstrap/Col":"../node_modules/react-bootstrap/esm/Col.js","react-bootstrap/Button":"../node_modules/react-bootstrap/esm/Button.js","react-bootstrap/Image":"../node_modules/react-bootstrap/esm/Image.js","./main-view.scss":"components/main-view/main-view.scss","../../assets/welcome-stephen-hawking.jpg":"assets/welcome-stephen-hawking.jpg"}],"index.scss":[function(require,module,exports) {
 var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
