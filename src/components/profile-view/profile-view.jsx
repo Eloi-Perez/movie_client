@@ -1,44 +1,49 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { connect } from 'react-redux';
 
 import { MovieCard } from '../movie-card/movie-card';
 
-export function ProfileView(props) {
+import { LinkContainer } from 'react-router-bootstrap'
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+
+
+function ProfileView(props) {
+    const [sameUser, setSameUser] = useState(true);
     const { userParam, getUserMovies, userMovies, myMovies } = props;
 
-    const sameUser = () => {
-        if (userParam === localStorage.getItem('user')) {
-            console.log('is same user');
-            return true;
-        } else {
-            console.log('is NOT same user');
-            return false;
-        }
-    }
-
     useEffect(() => {
-        if (!sameUser()) {
+        // (async () => {
+        //     try {
+        if (userParam === localStorage.getItem('user')) {
+            setSameUser(true);
+            console.log('is same user');
+        } else {
             getUserMovies(userParam);
+            setSameUser(false);
+            console.log('is NOT same user');
         }
+        // console.log(sameUser);
+        //     } catch (e) { console.error(e) }
+        // })()
     }, [userParam]);
-    console.log(userMovies);
 
     return (
         <div>
+            <Row>
             <h2>PROFILE INFO</h2>
-            <p>Username: {userParam}</p>
+            <h5>Username: {userParam}</h5>
             <br /><br />
             <h2>Favorite Movies:</h2>
+            </Row>
             <Row>{
                 (function () {
-                    if (sameUser()) {
+                    if (sameUser) {
                         return (
                             myMovies &&
                             myMovies.map(m => {
-                                console.log('test');
                                 if (m.Favorite) {
                                     return (<Col md={3} key={m.Movie._id}> <MovieCard movie={m.Movie} /> </Col>)
                                 }
@@ -56,10 +61,22 @@ export function ProfileView(props) {
                     }
                 })()
             }</Row>
-            <br /><br />
-            <Link to={`/users/${userParam}/edit`}>Edit Profile pesonal information</Link>
-            <br /><br />
+            { sameUser &&
+                <>
+                    <br />
+                    <LinkContainer to={`/users/${userParam}/edit`}>
+                        <Button>Edit Profile pesonal information</Button>
+                    </LinkContainer>
+                </>
+            }
         </div>
     );
 
 }
+
+const mapStateToProps = state => {
+    const { myMovies } = state;
+    return { myMovies };
+};
+
+export default connect(mapStateToProps)(ProfileView);

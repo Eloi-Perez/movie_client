@@ -3,14 +3,23 @@ import axios from 'axios';
 import { Link } from "react-router-dom";
 import PropTypes from 'prop-types';
 
+import { connect } from 'react-redux';
+import { setMyMovies } from '../../actions/actions';
+
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-export function MovieView(props) {
-    const [checkedFav, setCheckedFav] = useState(false)
-    const [checkedPlan, setCheckedPlan] = useState(false)
-    const [score, setScore] = useState("")
-    const { movie, myMovie, onBackClick } = props;
+// const mapStateToProps = state => {
+//     const { myMovies } = state;
+//     return { myMovies };
+// };
+
+function MovieView(props) {
+    const [checkedFav, setCheckedFav] = useState(false);
+    const [checkedPlan, setCheckedPlan] = useState(false);
+    const [score, setScore] = useState(null);
+    const [msg, setMsg] = useState('');
+    const { movie, myMovie, onBackClick } = props; //myMovies
 
     useEffect(() => {
         if (!!myMovie) {
@@ -22,10 +31,11 @@ export function MovieView(props) {
     }, []); //loading only once
 
     const switchFavorite = (e) => {
-        checkedFav ? setCheckedFav(false) : setCheckedFav(true);
+        // checkedFav ? setCheckedFav(false) : setCheckedFav(true);
+        setCheckedFav(!checkedFav);
     }
     const switchPlan = (e) => {
-        checkedPlan ? setCheckedPlan(false) : setCheckedPlan(true);
+        setCheckedPlan(!checkedPlan);
     }
     const switchScore = (val) => {
         let numVal = parseInt(val);
@@ -33,7 +43,9 @@ export function MovieView(props) {
     }
 
     const scoreFunc = () => {
-        if (score) { return score }
+        if (score) {
+            return score;
+        }
     }
 
     const saveProperties = (e) => {
@@ -41,6 +53,8 @@ export function MovieView(props) {
         console.log('saving...');
         let storedUser = localStorage.getItem('user');
         let token = localStorage.getItem('token');
+        // let scoreToSend = () => {if (score === null) {return ""}};
+        console.log('axios score: ->' + score + '<-');
         axios.put(`https://movie-api2.herokuapp.com/users/${storedUser}/myMovies`, {
             Movie: movie.Title,
             Favorite: checkedFav,
@@ -48,20 +62,19 @@ export function MovieView(props) {
             Score: score
         }, {
             headers: { Authorization: `Bearer ${token}` }
-
         })
             .then(response => {
-                const data = response.data;
-                console.log(data);
+                props.setMyMovies(response.data.myMovies);
                 console.log('saved');
-                //update myMovie(need to be pass as a prop) <--------------------HERE--------------------
-                //data not being updated automatically, when you add a film, go out and back info not saved in react, only in DB, so you need to relog
-                //need to update myMovie with response.data
+                setMsg('Saved!');
+                setTimeout(() => setMsg(''), 2500);
             })
             .catch(err => {
                 console.log(err.response.data);
                 // console.log(err.response.data.errors[0]);
                 console.error(err)
+                setMsg('Error');
+                setTimeout(() => setMsg(''), 2500);
             });
     }
 
@@ -70,10 +83,20 @@ export function MovieView(props) {
             <div className="movie-poster">
                 <img src={`https://movie-api2.herokuapp.com${movie.ImagePath}`} />
             </div>
+            <br />
             <div className="movie-title">
                 <span className="label">Title: </span>
-                <span className="value">{movie.Title}</span>
+                <span className="value h3">{movie.Title}</span>
+                <span>  Director: </span>
+                <Link to={`/directors/${movie.Director.Name}`}>
+                    <Button variant="link">{movie.Director.Name}</Button>
+                </Link>
+                <span> Genre: </span>
+                <Link to={`/genres/${movie.Genre.Name}`}>
+                    <Button variant="link">{movie.Genre.Name}</Button>
+                </Link>
             </div>
+
             <div className="movie-description">
                 <span className="label">Description: </span>
                 <span className="value">{movie.Description}</span>
@@ -96,22 +119,17 @@ export function MovieView(props) {
                     <Form.Label>Score</Form.Label>
                     <Form.Control as="select" value={scoreFunc()} onChange={e => switchScore(e.target.value)}>
                         <option value="" >Choose Score</option>
-                        <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option>
+                        {[...Array(11).keys()].map(num => <option key={num}>{num}</option>)}
+                        {/* <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option> */}
 
                     </Form.Control>
                 </Form.Group>
                 <Button variant="primary" type="submit" onClick={saveProperties}>Save changes</Button>
+                <span className="red"> {msg}</span>
             </Form>
 
-            <br /><br />
-            <Link to={`/directors/${movie.Director.Name}`}>
-                <Button variant="link">Director</Button>
-            </Link>
-            <Link to={`/genres/${movie.Genre.Name}`}>
-                <Button variant="link">Genre</Button>
-            </Link>
-
-            <button onClick={() => { onBackClick() }}>Back</button>
+            <br />
+            <Button variant="secondary" onClick={() => { onBackClick() }}>Back</Button>
         </div>
     );
 }
@@ -130,3 +148,5 @@ MovieView.propTypes = {
     }).isRequired,
     onBackClick: PropTypes.func.isRequired
 };
+
+export default connect(null, { setMyMovies })(MovieView); //mapStateToProps

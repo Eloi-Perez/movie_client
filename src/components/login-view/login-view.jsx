@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { Link } from "react-router-dom";
+// import { fetchUserAction } from '../../actions/actions'
 
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
@@ -9,6 +10,7 @@ import Button from 'react-bootstrap/Button';
 export function LoginView(props) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [msg, setMsg] = useState('');
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,8 +26,19 @@ export function LoginView(props) {
             .catch(e => {
                 // console.log(e)
                 console.log('no such user')
+                setMsg('The username or password is incorrect');
+                setTimeout(() => setMsg(''), 2500);
             });
     };
+
+
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const user = await fetchUserAction(username,password )
+
+    //             props.onLoggedIn(user);
+
+    // };
 
     return (
         <div>
@@ -41,8 +54,10 @@ export function LoginView(props) {
                 </Form.Group>
 
                 <Button variant="primary" type="submit" onClick={handleSubmit}>Login</Button>
+                <span className="red"> {msg}</span>
             </Form>
             <br />
+            <h5>Thank you for visiting, Login or register a free account to access all the content.</h5>
             <Link to={'/register'}>
                 <Button variant="secondary">Register new Account</Button>
             </Link>
