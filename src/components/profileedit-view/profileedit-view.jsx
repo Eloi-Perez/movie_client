@@ -15,6 +15,13 @@ export function ProfileEditView(props) {
     const { userParam, onLoggedOut, onBackClick } = props;
     const [msg, setMsg] = useState('');
     const [msgDel, setMsgDel] = useState('');
+    const [testUser, setTestUser] = useState(false);
+
+    useEffect(() => {
+        if ('testUser' == localStorage.getItem('user')) {
+            setSameUser(true);
+        }
+    }, [userParam]);
 
     const updateUser = (e) => {
         e.preventDefault();
@@ -109,18 +116,27 @@ export function ProfileEditView(props) {
                     <Form.Label>Birthdate:</Form.Label>
                     <Form.Control type="date" onChange={e => setBirthdate(e.target.value)} />
                 </Form.Group>
-
-                <Button variant="warning" type="submit" onClick={updateUser}>Update Acount</Button>
+                {!testUser && (
+                    <Button variant="warning" type="submit" onClick={updateUser}>Update Acount</Button>
+                )}
+                {testUser && (
+                    <Button variant="warning"><del>Update Acount</del></Button>
+                )}
                 <span className="red"> {msg}</span>
             </Form>
             <br /><br /><br /><br />
-            <h3>FORM DELETE ACCOUNT</h3>
+            <h3>DELETE AND REMOVE ALL DATA</h3>
             <Form>
                 <Form.Group controlId="formDelPassword">
                     <Form.Label>Password:</Form.Label>
                     <Form.Control type="password" onChange={e => setDelPassword(e.target.value)} />
                 </Form.Group>
-                <Button variant="danger" type="submit" onClick={deleteUser}>DELETE Acount</Button>
+                {!testUser && (
+                    <Button variant="danger" type="submit" onClick={deleteUser}>DELETE Acount</Button>
+                )}
+                {testUser && (
+                    <Button variant="danger"><del>DELETE Acount</del></Button>
+                )}
                 <span className="red"> {msgDel}</span>
             </Form>
             <br /><br />

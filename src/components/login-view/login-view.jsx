@@ -57,7 +57,7 @@ export function LoginView(props) {
                 <span className="red"> {msg}</span>
             </Form>
             <br />
-            <h5>Thank you for visiting, Login or register a free account to access all the content.</h5>
+            <h5>Thank you for visiting, Login or register a free account to access all the content.<br />Or try it with: testUser pw: 123</h5>
             <Link to={'/register'}>
                 <Button variant="secondary">Register new Account</Button>
             </Link>
