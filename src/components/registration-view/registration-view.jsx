@@ -25,8 +25,6 @@ export function RegistrationView(props) {
                 const data = response.data;
                 console.log(data);
                 props.onLoggedIn(data);
-                // location.assign('/');
-                // window.open('/', '_self'); // '_self' open in the current tab
                 //no redirection needed, once user is detected in state react will show main-view
             })
             .catch(err => {
@@ -62,7 +60,7 @@ export function RegistrationView(props) {
 
                 <Button variant="primary" type="submit" onClick={handleRegister}>Register</Button>
                 <span className="red"> {msg}</span>
-                {/* missing form JS instant validation */}
+                {/* JS instant validation ? */}
             </Form>
             <br />
             <Button variant="secondary" onClick={props.onBackClick}>Log In with existing User</Button>

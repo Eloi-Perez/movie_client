@@ -31,15 +31,6 @@ export function LoginView(props) {
             });
     };
 
-
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-    //     const user = await fetchUserAction(username,password )
-
-    //             props.onLoggedIn(user);
-
-    // };
-
     return (
         <div>
             <Form>

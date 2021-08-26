@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import Form from 'react-bootstrap/Form';
@@ -19,7 +19,7 @@ export function ProfileEditView(props) {
 
     useEffect(() => {
         if ('testUser' == localStorage.getItem('user')) {
-            setSameUser(true);
+            setTestUser(true);
         }
     }, [userParam]);
 

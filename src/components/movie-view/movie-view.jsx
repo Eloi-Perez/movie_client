@@ -9,11 +9,6 @@ import { setMyMovies } from '../../actions/actions';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
-// const mapStateToProps = state => {
-//     const { myMovies } = state;
-//     return { myMovies };
-// };
-
 function MovieView(props) {
     const [checkedFav, setCheckedFav] = useState(false);
     const [checkedPlan, setCheckedPlan] = useState(false);
@@ -31,7 +26,6 @@ function MovieView(props) {
     }, []); //loading only once
 
     const switchFavorite = (e) => {
-        // checkedFav ? setCheckedFav(false) : setCheckedFav(true);
         setCheckedFav(!checkedFav);
     }
     const switchPlan = (e) => {
@@ -54,7 +48,7 @@ function MovieView(props) {
         let storedUser = localStorage.getItem('user');
         let token = localStorage.getItem('token');
         // let scoreToSend = () => {if (score === null) {return ""}};
-        console.log('axios score: ->' + score + '<-');
+        // console.log('axios score: ->' + score + '<-');
         axios.put(`https://movie-api2.herokuapp.com/users/${storedUser}/myMovies`, {
             Movie: movie.Title,
             Favorite: checkedFav,
@@ -84,8 +78,8 @@ function MovieView(props) {
                 <img src={`https://movie-api2.herokuapp.com${movie.ImagePath}`} />
             </div>
             <br />
-            <div className="movie-title">
-                <span className="label">Title: </span>
+            <div className="movie-title h4">
+                <span className="label h3">Title: </span>
                 <span className="value h3">{movie.Title}</span>
                 <span>  Director: </span>
                 <Link to={`/directors/${movie.Director.Name}`}>
@@ -98,7 +92,7 @@ function MovieView(props) {
             </div>
 
             <div className="movie-description">
-                <span className="label">Description: </span>
+                <span className="label h3">Description: </span>
                 <span className="value">{movie.Description}</span>
             </div>
             <br />
@@ -120,7 +114,6 @@ function MovieView(props) {
                     <Form.Control as="select" value={scoreFunc()} onChange={e => switchScore(e.target.value)}>
                         <option value="" >Choose Score</option>
                         {[...Array(11).keys()].map(num => <option key={num}>{num}</option>)}
-                        {/* <option>0</option><option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option> */}
 
                     </Form.Control>
                 </Form.Group>
