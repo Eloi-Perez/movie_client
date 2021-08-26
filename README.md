@@ -5,6 +5,8 @@ Movies database using in the server side my [movie_API](https://github.com/Eloi-
 
 A React project, using Hooks, Redux for the state management and React-Router for the navigation.
 
+![web image](https://github.com/Eloi-Perez/movie_client/blob/assets/movie-client.jpg)
+
 
 ## Technologies used:
 * React
