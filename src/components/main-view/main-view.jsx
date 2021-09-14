@@ -133,8 +133,8 @@ class MainView extends React.Component {
                                     </LinkContainer>
                                 </Nav.Item>
                                 <Nav.Item as="li">
-                                    <LinkContainer to={`/users/testUser`}>
-                                        <Nav.Link>Profile of test User</Nav.Link>
+                                    <LinkContainer to={`/users/Eloi`}>
+                                        <Nav.Link>Eloi's Profile</Nav.Link>
                                     </LinkContainer>
                                 </Nav.Item>
                                 <Nav.Item className="flex-grow-1"></Nav.Item>
