@@ -1,6 +1,6 @@
 # movie_client
 
-Movies database using in the server side my [movie_API](https://github.com/Eloi-Perez/movie_api)
+Movies database using in the server-side my [movie_API](https://github.com/Eloi-Perez/movie_api)
 
 
 A React project, using Hooks, Redux for the state management and React-Router for the navigation.
